@@ -3,9 +3,6 @@ import { Instrument_Sans } from 'next/font/google';
 import { ThemeProvider } from "next-themes"
 import "./globals.css"
 
-import { Footer } from '@/components/footer';
-import { MenuBar } from '@/components/menu-bar';
-
 const instrumentSans = Instrument_Sans({
     subsets: ['latin'],
     variable: '--font-instrument-sans',
