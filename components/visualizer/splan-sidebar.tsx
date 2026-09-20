@@ -4,11 +4,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeIcon, WaypointsIcon } from "lucide-react"
 import { PointList } from "./point-list"
-import type { ActionPoint, PathPoint, Splan } from "./types"
+import type { ActionPoint, WayPoint, Splan } from "./types"
 
 type SplanSidebarProps = {
     selectedSplan?: Splan
-    setPathPoints: (points: PathPoint[]) => void
+    setPathPoints: (points: WayPoint[]) => void
     setActionPoints: (points: ActionPoint[]) => void
     onSelectPoint: (id: string) => void
     onSelectAction: (id: string) => void

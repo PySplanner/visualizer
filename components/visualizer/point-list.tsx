@@ -3,9 +3,9 @@
 import { ArrowRightIcon, GripVerticalIcon } from "lucide-react"
 import { ReactSortable } from "react-sortablejs"
 import { Button } from "@/components/ui/button"
-import type { ActionPoint, PathPoint } from "./types"
+import type { ActionPoint, WayPoint } from "./types"
 
-type PointListProps<T extends PathPoint | ActionPoint> = {
+type PointListProps<T extends WayPoint | ActionPoint> = {
     id: string
     items: T[]
     setItems: (items: T[]) => void
@@ -14,7 +14,7 @@ type PointListProps<T extends PathPoint | ActionPoint> = {
     onHover: (id: string) => void
 }
 
-export function PointList<T extends PathPoint | ActionPoint>({
+export function PointList<T extends WayPoint | ActionPoint>({
     id,
     items,
     setItems,
@@ -38,7 +38,7 @@ export function PointList<T extends PathPoint | ActionPoint>({
                         <span>{point.name}</span>
                         {kind === "path" ? (
                             <span className="ml-1 text-muted-foreground">
-                                ({(point as PathPoint).x}, {(point as PathPoint).y}, {(point as PathPoint).heading})
+                                ({(point as WayPoint).x}, {(point as WayPoint).y}, {(point as WayPoint).theta})
                             </span>
                         ) : (
                             <span className="ml-1 text-muted-foreground">{(point as ActionPoint).t}</span>
