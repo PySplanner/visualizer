@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useSplans } from "@/hooks/use-splans"
 import { FieldView } from "@/components/visualizer/field-view"
 import { SplanSidebar } from "@/components/visualizer/splan-sidebar"
-import { SplanTabs } from "@/components/visualizer/splan-tabs"
+import { Menubar } from "@/components/visualizer/menubar"
 
 export default function Visualizer() {
     const {
@@ -25,30 +25,32 @@ export default function Visualizer() {
     const [hoveredActionId, setHoveredActionId] = useState("-1")
 
     return (
-        <ResizablePanelGroup orientation="horizontal">
-            <ResizablePanel defaultSize="400px" minSize="300px" maxSize="600px" collapsible>
-                <SplanSidebar
-                    selectedSplan={selectedSplan}
-                    setPathPoints={setPathPoints}
-                    setActionPoints={setActionPoints}
-                    onSelectPoint={setSelectedPointId}
-                    onSelectAction={setSelectedActionId}
-                    onHoverPoint={setHoveredPointId}
-                    onHoverAction={setHoveredActionId}
-                />
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel className="flex flex-col overflow-hidden">
-                <SplanTabs
-                    splans={splans}
-                    selectedSplanId={selectedSplanId}
-                    onSelect={setSelectedSplanId}
-                    onReorder={setSplans}
-                    onDelete={deleteSplan}
-                    onCreate={addSplan}
-                />
-                <FieldView />
-            </ResizablePanel>
-        </ResizablePanelGroup>
+        <div className="flex flex-col h-full w-full overflow-hidden">
+            <Menubar
+                splans={splans}
+                selectedSplanId={selectedSplanId}
+                onSelect={setSelectedSplanId}
+                onReorder={setSplans}
+                onDelete={deleteSplan}
+                onCreate={addSplan}
+            />
+            <ResizablePanelGroup orientation="horizontal">
+                <ResizablePanel defaultSize="400px" minSize="300px" maxSize="600px" collapsible>
+                    <SplanSidebar
+                        selectedSplan={selectedSplan}
+                        setPathPoints={setPathPoints}
+                        setActionPoints={setActionPoints}
+                        onSelectPoint={setSelectedPointId}
+                        onSelectAction={setSelectedActionId}
+                        onHoverPoint={setHoveredPointId}
+                        onHoverAction={setHoveredActionId}
+                    />
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel className="flex overflow-hidden">
+                    <FieldView />
+                </ResizablePanel>
+            </ResizablePanelGroup>
+        </div>
     )
 }
