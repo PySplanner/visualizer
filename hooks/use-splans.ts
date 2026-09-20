@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
-import type { ActionPoint, PathPoint, Splan } from "@/components/visualizer/types"
+import type { ActionPoint, WayPoint, Splan } from "@/components/visualizer/types"
 
 const MAX_SPLANS = 20
 
@@ -27,7 +27,7 @@ export function useSplans() {
         )))
     }
 
-    const setPathPoints = (pathPoints: PathPoint[]) => {
+    const setPathPoints = (pathPoints: WayPoint[]) => {
         if (selectedSplanId === "-1") return
         updateSelectedSplan((splan) => ({ ...splan, pathPoints }))
     }

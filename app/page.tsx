@@ -29,10 +29,10 @@ export default function Visualizer() {
             <Menubar
                 splans={splans}
                 selectedSplanId={selectedSplanId}
-                onSelect={setSelectedSplanId}
-                onReorder={setSplans}
-                onDelete={deleteSplan}
-                onCreate={addSplan}
+                onSplanSelect={setSelectedSplanId}
+                onSplanReorder={setSplans}
+                onSplanDelete={deleteSplan}
+                onSplanCreate={addSplan}
             />
             <ResizablePanelGroup orientation="horizontal">
                 <ResizablePanel defaultSize="400px" minSize="300px" maxSize="600px" collapsible>

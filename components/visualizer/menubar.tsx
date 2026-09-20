@@ -23,13 +23,13 @@ export function MenubarButton({ className, ...props }: MenubarButtonProps) {
 type MenubarProps = {
     splans: Splan[]
     selectedSplanId: string
-    onSelect: (id: string) => void
-    onReorder: (splans: Splan[]) => void
-    onDelete: (id: string) => void
-    onCreate: () => Splan | null
+    onSplanSelect: (id: string) => void
+    onSplanReorder: (splans: Splan[]) => void
+    onSplanDelete: (id: string) => void
+    onSplanCreate: () => Splan | null
 }
 
-export function Menubar({ splans, selectedSplanId, onSelect, onReorder, onDelete, onCreate }: MenubarProps) {
+export function Menubar({ splans, selectedSplanId, onSplanSelect, onSplanReorder, onSplanDelete, onSplanCreate }: MenubarProps) {
     const wrapRef = useRef<HTMLDivElement>(null)
     const trackRef = useRef<HTMLDivElement>(null)
     const [showLeft, setShowLeft] = useState(false)
@@ -70,7 +70,7 @@ export function Menubar({ splans, selectedSplanId, onSelect, onReorder, onDelete
     }, [splans.length, updateArrows])
 
     const createSplan = () => {
-        const newSplan = onCreate()
+        const newSplan = onSplanCreate()
         if (!newSplan) return
         window.setTimeout(() => {
             if (!trackRef.current) return
@@ -94,24 +94,24 @@ export function Menubar({ splans, selectedSplanId, onSelect, onReorder, onDelete
 
             <div className="relative min-w-0 flex-1">
                 <div className={`pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-14 bg-linear-to-r from-background to-transparent transition-opacity duration-200 ${showLeft ? "opacity-100" : "opacity-0"}`}></div>
-                <MenubarButton onClick={() => trackRef.current?.scrollBy({ left: -160, behavior: "smooth" })} className={`absolute left-0.5 top-1/2 z-20 -translate-y-1/2 bg-transparent text-primary hover:bg-transparent ${showLeft ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}>
+                <MenubarButton onClick={() => trackRef.current?.scrollBy({ left: -160, behavior: "smooth" })} className={`absolute left-0.5 top-1/2 z-20 -translate-y-1/2 active:-translate-y-1/2 bg-transparent text-primary hover:border-transparent hover:bg-transparent hover:cursor-pointer ${showLeft ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}>
                     <ChevronLeftIcon />
                 </MenubarButton>
 
                 <div className="scrollbar-hide flex overflow-x-auto scroll-smooth px-1" ref={trackRef} style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-                    <ReactSortable tag="div" id="splans-list" list={splans} setList={onReorder} animation={200} handle=".handle" className="flex flex-row items-center gap-2.5">
+                    <ReactSortable tag="div" id="splans-list" list={splans} setList={onSplanReorder} animation={200} handle=".handle" className="flex flex-row items-center gap-2.5">
                         {splans.map((splan) => (
-                            <div key={splan.id} onClick={() => onSelect(splan.id)} className={`flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-medium whitespace-nowrap transition-colors ${selectedSplanId === splan.id ? "border-[#e8c547] text-[#e8c547]" : "border-[#333] bg-[#1c1c1c] text-[#eee]"}`}>
+                            <div key={splan.id} onClick={() => onSplanSelect(splan.id)} className={`flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-medium whitespace-nowrap transition-colors ${selectedSplanId === splan.id ? "border-[#e8c547] text-[#e8c547]" : "border-[#333] bg-[#1c1c1c] text-[#eee]"}`}>
                                 <GripVerticalIcon className="handle h-3.5 w-3.5 cursor-grab text-[#666] active:cursor-grabbing" />
                                 <span>{splan.name}</span>
-                                <XIcon onClick={(event) => { event.stopPropagation(); onDelete(splan.id) }} className="h-3.5 w-3.5 cursor-pointer text-[#888] transition-colors hover:text-white" />
+                                <XIcon onClick={(event) => { event.stopPropagation(); onSplanDelete(splan.id) }} className="h-3.5 w-3.5 cursor-pointer text-[#888] transition-colors hover:text-white" />
                             </div>
                         ))}
                     </ReactSortable>
                 </div>
 
                 <div className={`pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-14 bg-linear-to-l from-background to-transparent transition-opacity duration-200 ${showRight ? "opacity-100" : "opacity-0"}`}></div>
-                <MenubarButton onClick={() => trackRef.current?.scrollBy({ left: 160, behavior: "smooth" })} className={`absolute right-0.5 top-1/2 z-20 -translate-y-1/2 bg-transparent text-primary hover:bg-transparent ${showRight ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}>
+                <MenubarButton onClick={() => trackRef.current?.scrollBy({ left: 160, behavior: "smooth" })} className={`absolute right-0.5 top-1/2 z-20 -translate-y-1/2 active:-translate-y-1/2 hover:border-transparent bg-transparent text-primary hover:bg-transparent hover:cursor-pointer ${showRight ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}>
                     <ChevronRightIcon />
                 </MenubarButton>
             </div>
