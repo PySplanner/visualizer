@@ -26,7 +26,7 @@ export function FieldView() {
             className={`flex flex-1 items-center justify-center overflow-hidden relative select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
         >
             <img
-                src="/unearthedWireframeField.png"
+                src="/bioglow-founders-wireframe.png"
                 alt="FLL Mat"
                 style={{
                     transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
