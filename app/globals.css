@@ -116,6 +116,19 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+@layer components {
+  /* Creates a subtle diagonal background gradient, only used on 404/screen too small pages */
+  .background-gradient {
+    background-image: linear-gradient(
+      135deg, 
+      var(--color-background) 0%, 
+      hsl(270, 35%, 9%) 50%,
+      var(--color-background) 80%
+    );
+    background-attachment: fixed;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
