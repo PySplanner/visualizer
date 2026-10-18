@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
-import type { ActionPoint, WayPoint, Splan } from "@/components/visualizer/types"
+import type { ActionPoint, WayPoint, Splan } from "@/types/geometry"
 
 const MAX_SPLANS = 20
 

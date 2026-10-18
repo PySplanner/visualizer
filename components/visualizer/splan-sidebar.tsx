@@ -4,7 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeIcon, WaypointsIcon } from "lucide-react"
 import { PointList } from "./point-list"
-import type { ActionPoint, WayPoint, Splan } from "./types"
+import type { ActionPoint, WayPoint, Splan } from "../../types/geometry"
 
 type SplanSidebarProps = {
     selectedSplan?: Splan

@@ -3,7 +3,7 @@
 import { ArrowRightIcon, GripVerticalIcon } from "lucide-react"
 import { ReactSortable } from "react-sortablejs"
 import { Button } from "@/components/ui/button"
-import type { ActionPoint, WayPoint } from "./types"
+import type { ActionPoint, WayPoint } from "../../types/geometry"
 
 type PointListProps<T extends WayPoint | ActionPoint> = {
     id: string

@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react"
 
 type Pan = { x: number; y: number }
 
-export function useFieldViewport() {
+export function useField() {
     const [zoom, setZoom] = useState(1)
     const [pan, setPan] = useState<Pan>({ x: 0, y: 0 })
     const [isDragging, setIsDragging] = useState(false)

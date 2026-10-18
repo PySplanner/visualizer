@@ -1,6 +1,7 @@
-import { Toaster } from "@/components/ui/sonner"
 import { Instrument_Sans } from 'next/font/google';
 import { ThemeProvider } from "next-themes"
+import { SettingsProvider } from '@/hooks/use-settings';
+import { Toaster } from "@/components/ui/sonner"
 import ScreenTooSmall from "@/components/visualizer/screen-too-small"
 import "./globals.css"
 
@@ -18,7 +19,9 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
             <ScreenTooSmall />
           </div>
           <div className="hidden md:flex flex-col h-screen w-screen bg-background overflow-hidden overflow-y-auto relative">
-            {children}
+            <SettingsProvider>
+              {children}
+            </SettingsProvider>
           </div>
           <Toaster richColors position="bottom-right" />
         </ThemeProvider>

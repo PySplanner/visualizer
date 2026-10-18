@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon, GripVerticalIcon, PlusIcon, XIcon, S
 import { ReactSortable } from "react-sortablejs"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import type { Splan } from "./types"
+import type { Splan } from "../../types/geometry"
 import { Separator } from "../ui/separator"
 
 const ICON_PROPS = { size: 18, strokeWidth: 2 }

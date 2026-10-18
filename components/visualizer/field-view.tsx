@@ -1,8 +1,10 @@
 "use client"
 
-import { useFieldViewport } from "@/hooks/use-field-viewport"
+import { useField } from "@/hooks/use-field"
+import { useSettings } from "@/hooks/use-settings"
 
 export function FieldView() {
+    const { settings, updateSetting } = useSettings()
     const {
         zoom,
         pan,
@@ -13,7 +15,7 @@ export function FieldView() {
         handleMouseMove,
         stopDragging,
         resetView,
-    } = useFieldViewport()
+    } = useField()
 
     return (
         <div
@@ -26,7 +28,7 @@ export function FieldView() {
             className={`flex flex-1 items-center justify-center overflow-hidden relative select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
         >
             <img
-                src="/bioglow-founders-wireframe.png"
+                src={`/fields/${settings.fieldImage}.png`}
                 alt="FLL Mat"
                 style={{
                     transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
