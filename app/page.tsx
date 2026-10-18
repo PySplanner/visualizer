@@ -23,12 +23,14 @@ export default function Visualizer() {
     const [selectedActionId, setSelectedActionId] = useState("-1")
     const [hoveredPointId, setHoveredPointId] = useState("-1")
     const [hoveredActionId, setHoveredActionId] = useState("-1")
+    const [isCreatingPoint, setIsCreatingPoint] = useState(false)
 
     return (
         <div className="flex flex-col h-full w-full overflow-hidden">
             <Menubar
                 splans={splans}
                 selectedSplanId={selectedSplanId}
+                onCreatePathPoint={() => setIsCreatingPoint(true)}
                 onSplanSelect={setSelectedSplanId}
                 onSplanReorder={setSplans}
                 onSplanDelete={deleteSplan}
@@ -48,7 +50,12 @@ export default function Visualizer() {
                 </ResizablePanel>
                 <ResizableHandle withHandle />
                 <ResizablePanel className="flex overflow-hidden">
-                    <FieldView />
+                    <FieldView
+                        isCreatingPoint={isCreatingPoint}
+                        pathPoints={selectedSplan?.pathPoints ?? []}
+                        setPathPoints={setPathPoints}
+                        onPointCreationComplete={() => setIsCreatingPoint(false)}
+                    />
                 </ResizablePanel>
             </ResizablePanelGroup>
         </div>

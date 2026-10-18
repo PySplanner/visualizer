@@ -23,13 +23,14 @@ export function MenubarButton({ className, ...props }: MenubarButtonProps) {
 type MenubarProps = {
     splans: Splan[]
     selectedSplanId: string
+    onCreatePathPoint: () => void
     onSplanSelect: (id: string) => void
     onSplanReorder: (splans: Splan[]) => void
     onSplanDelete: (id: string) => void
     onSplanCreate: () => Splan | null
 }
 
-export function Menubar({ splans, selectedSplanId, onSplanSelect, onSplanReorder, onSplanDelete, onSplanCreate }: MenubarProps) {
+export function Menubar({ splans, selectedSplanId, onCreatePathPoint, onSplanSelect, onSplanReorder, onSplanDelete, onSplanCreate }: MenubarProps) {
     const wrapRef = useRef<HTMLDivElement>(null)
     const trackRef = useRef<HTMLDivElement>(null)
     const [showLeft, setShowLeft] = useState(false)
@@ -87,7 +88,7 @@ export function Menubar({ splans, selectedSplanId, onSplanSelect, onSplanReorder
                     <span className="text-lg font-bold text-primary">PySplanner</span>
                 </div>
                 <Separator orientation="vertical" className="flex h-10 w-px mx-2" />
-                <MenubarButton><SplinePointerIcon {...ICON_PROPS} /></MenubarButton>
+                <MenubarButton onClick={onCreatePathPoint} aria-label="Add path point"><SplinePointerIcon {...ICON_PROPS} /></MenubarButton>
                 <MenubarButton><RobotArm {...ICON_PROPS} /></MenubarButton>
                 <Separator orientation="vertical" className="flex h-10 w-px mx-2" />
             </div>
