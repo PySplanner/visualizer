@@ -1,36 +1,32 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { ChevronLeftIcon, ChevronRightIcon, GripVerticalIcon, PlusIcon, XIcon, SplinePointerIcon, RobotArm, SettingsIcon } from "lucide-react"
-import { ReactSortable } from "react-sortablejs"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { ChevronLeftIcon, ChevronRightIcon, GripVerticalIcon, PlusIcon, XIcon, SplinePointerIcon, RobotArm, MoveIcon,
+    SettingsIcon } from "lucide-react"
+import { ReactSortable } from "react-sortablejs"
 import { cn } from "@/lib/utils"
-import type { Splan } from "../../types/geometry"
-import { Separator } from "../ui/separator"
+import type { Splan } from "@/types/geometry"
+import { Mode } from "@/app/page"
 
 const ICON_PROPS = { size: 18, strokeWidth: 2 }
-type MenubarButtonProps = React.ComponentProps<typeof Button>
-
-export function MenubarButton({ className, ...props }: MenubarButtonProps) {
-    return (
-        <Button
-            className={cn("flex size-9 items-center justify-center rounded-lg bg-card border border-border text-foreground hover:bg-card/80 hover:border-primary", className)}
-            {...props}
-        />
-    )
-}
 
 type MenubarProps = {
     splans: Splan[]
     selectedSplanId: string
-    onCreatePathPoint: () => void
+    mode: Mode
+    onModeChange: (mode: Mode) => void
     onSplanSelect: (id: string) => void
     onSplanReorder: (splans: Splan[]) => void
     onSplanDelete: (id: string) => void
     onSplanCreate: () => Splan | null
 }
 
-export function Menubar({ splans, selectedSplanId, onCreatePathPoint, onSplanSelect, onSplanReorder, onSplanDelete, onSplanCreate }: MenubarProps) {
+export function Menubar(
+    { splans, selectedSplanId, mode, onModeChange, onSplanSelect, onSplanReorder, onSplanDelete, onSplanCreate }: MenubarProps
+) {
     const wrapRef = useRef<HTMLDivElement>(null)
     const trackRef = useRef<HTMLDivElement>(null)
     const [showLeft, setShowLeft] = useState(false)
@@ -80,6 +76,27 @@ export function Menubar({ splans, selectedSplanId, onCreatePathPoint, onSplanSel
         }, 10)
     }
 
+    type MenubarButtonProps = React.ComponentProps<typeof Button>
+    function MenubarButton({ className, ...props }: MenubarButtonProps) {
+        return (
+            <Button
+                className={cn("flex size-9 items-center justify-center rounded-lg bg-card border border-border text-foreground hover:bg-card/80 hover:border-primary", className)}
+                {...props}
+            />
+        )
+    }
+
+    type MenubarToggleItemProps = React.ComponentProps<typeof ToggleGroupItem>
+    function MenubarToggleItem({ className, value, ...props }: MenubarToggleItemProps) {
+        return (
+            <ToggleGroupItem
+                className={cn(value == mode ? "border-primary" : "", className)}
+                value={value}
+                {...props}
+            />
+        )
+    }
+
     return (
         <div className="relative flex min-w-0 items-center gap-2 border-b px-2 py-3" ref={wrapRef}>
             <div className="flex shrink-0 items-center gap-2">
@@ -88,8 +105,11 @@ export function Menubar({ splans, selectedSplanId, onCreatePathPoint, onSplanSel
                     <span className="text-lg font-bold text-primary">PySplanner</span>
                 </div>
                 <Separator orientation="vertical" className="flex h-10 w-px mx-2" />
-                <MenubarButton onClick={onCreatePathPoint} aria-label="Add path point"><SplinePointerIcon {...ICON_PROPS} /></MenubarButton>
-                <MenubarButton><RobotArm {...ICON_PROPS} /></MenubarButton>
+                <ToggleGroup type="single" variant="outline" spacing={2} value={mode} onValueChange={(value) => onModeChange(value as Mode)}>
+                    <MenubarToggleItem value="move"><MoveIcon {...ICON_PROPS} /></MenubarToggleItem>
+                    <MenubarToggleItem value="path-point"><SplinePointerIcon {...ICON_PROPS} /></MenubarToggleItem>
+                    <MenubarToggleItem value="action-point"><RobotArm {...ICON_PROPS} /></MenubarToggleItem>
+                </ToggleGroup>
                 <Separator orientation="vertical" className="flex h-10 w-px mx-2" />
             </div>
 

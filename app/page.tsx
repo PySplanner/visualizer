@@ -7,6 +7,12 @@ import { FieldView } from "@/components/visualizer/field-view"
 import { SplanSidebar } from "@/components/visualizer/splan-sidebar"
 import { Menubar } from "@/components/visualizer/menubar"
 
+export enum Mode {
+    MOVE = "move",
+    PATH_POINT = "path-point",
+    ACTION_POINT = "action-point"
+}
+
 export default function Visualizer() {
     const {
         splans,
@@ -23,14 +29,15 @@ export default function Visualizer() {
     const [selectedActionId, setSelectedActionId] = useState("-1")
     const [hoveredPointId, setHoveredPointId] = useState("-1")
     const [hoveredActionId, setHoveredActionId] = useState("-1")
-    const [isCreatingPoint, setIsCreatingPoint] = useState(false)
+    const [mode, setMode] = useState<Mode>(Mode.MOVE)
 
     return (
         <div className="flex flex-col h-full w-full overflow-hidden">
             <Menubar
                 splans={splans}
                 selectedSplanId={selectedSplanId}
-                onCreatePathPoint={() => setIsCreatingPoint(true)}
+                mode={mode}
+                onModeChange={setMode}
                 onSplanSelect={setSelectedSplanId}
                 onSplanReorder={setSplans}
                 onSplanDelete={deleteSplan}
@@ -40,6 +47,8 @@ export default function Visualizer() {
                 <ResizablePanel defaultSize="400px" minSize="300px" maxSize="600px" collapsible>
                     <SplanSidebar
                         selectedSplan={selectedSplan}
+                        selectedPathPointId={selectedPointId}
+                        selectedActionPointId={selectedActionId}
                         setPathPoints={setPathPoints}
                         setActionPoints={setActionPoints}
                         onSelectPoint={setSelectedPointId}
@@ -51,10 +60,19 @@ export default function Visualizer() {
                 <ResizableHandle withHandle />
                 <ResizablePanel className="flex overflow-hidden">
                     <FieldView
-                        isCreatingPoint={isCreatingPoint}
-                        pathPoints={selectedSplan?.pathPoints ?? []}
+                        pathPoints={selectedSplan?.pathPoints || []}
+                        actionPoints={selectedSplan?.actionPoints || []}
+                        selectedPointId={selectedPointId}
+                        selectedActionId={selectedActionId}
+                        hoveredPointId={hoveredPointId}
+                        hoveredActionId={hoveredActionId}
+                        mode={mode}
                         setPathPoints={setPathPoints}
-                        onPointCreationComplete={() => setIsCreatingPoint(false)}
+                        setActionPoints={setActionPoints}
+                        onSelectPoint={setSelectedPointId}
+                        onSelectAction={setSelectedActionId}
+                        onHoverPoint={setHoveredPointId}
+                        onHoverAction={setHoveredActionId}
                     />
                 </ResizablePanel>
             </ResizablePanelGroup>

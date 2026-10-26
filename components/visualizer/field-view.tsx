@@ -3,14 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useField } from "@/hooks/use-field"
 import { useSettings } from "@/hooks/use-settings"
-import type { WayPoint } from "@/types/geometry"
-
-type FieldViewProps = {
-    isCreatingPoint: boolean
-    pathPoints: WayPoint[]
-    setPathPoints: (points: WayPoint[]) => void
-    onPointCreationComplete: () => void
-}
+import type { WayPoint, ActionPoint } from "@/types/geometry"
+import { Mode } from "@/app/page"
 
 type ImageRect = {
     left: number
@@ -19,7 +13,26 @@ type ImageRect = {
     height: number
 }
 
-export function FieldView({ isCreatingPoint, pathPoints, setPathPoints, onPointCreationComplete }: FieldViewProps) {
+type FieldViewProps = {
+    pathPoints: WayPoint[]
+    actionPoints: ActionPoint[]
+    selectedPointId: string
+    selectedActionId: string
+    hoveredPointId: string
+    hoveredActionId: string
+    mode: Mode
+    setPathPoints: (points: WayPoint[]) => void
+    setActionPoints: (points: ActionPoint[]) => void
+    onSelectPoint: (id: string) => void
+    onSelectAction: (id: string) => void
+    onHoverPoint: (id: string) => void
+    onHoverAction: (id: string) => void
+}
+
+export function FieldView(
+    { pathPoints, actionPoints, selectedPointId, selectedActionId, hoveredPointId, hoveredActionId, mode, 
+        setPathPoints, setActionPoints, onSelectPoint, onSelectAction, onHoverPoint, onHoverAction }: FieldViewProps
+) {
     const { settings } = useSettings()
     const {
         zoom,
@@ -109,11 +122,11 @@ export function FieldView({ isCreatingPoint, pathPoints, setPathPoints, onPointC
             const movedY = event.clientY - pointerStartRef.current.y
             if (Math.hypot(movedX, movedY) > 3) didDragRef.current = true
         }
-        if (isCreatingPoint) setPreviewPoint(getPointFromEvent(event))
+        if (mode === "path-point") setPreviewPoint(getPointFromEvent(event))
     }
 
     const handlePointClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        if (!isCreatingPoint || didDragRef.current) return
+        if (mode !== "path-point" || didDragRef.current) return
         const point = getPointFromEvent(event)
         if (point) {
             setPathPoints([
@@ -129,7 +142,6 @@ export function FieldView({ isCreatingPoint, pathPoints, setPathPoints, onPointC
             ])
         }
         setPreviewPoint(null)
-        onPointCreationComplete()
     }
 
     const pointStyle = (point: { x: number; y: number }) => {
@@ -172,14 +184,20 @@ export function FieldView({ isCreatingPoint, pathPoints, setPathPoints, onPointC
             {imageRect && pathPoints.map((point) => (
                 <span
                     key={point.id}
-                    className="pointer-events-none absolute z-20 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
+                    className={`pointer-events-auto absolute z-20 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full ${(point.id === hoveredPointId ? "bg-secondary-foreground" : "bg-secondary")}`}
                     style={pointStyle(point)}
                     title={point.name}
+                    onMouseEnter={() => onHoverPoint(point.id)}
+                    onMouseLeave={() => onHoverPoint("-1")}
+                    onClick={(event) => {
+                        event.stopPropagation()
+                        onSelectPoint(point.id)
+                    }}
                 />
             ))}
-            {isCreatingPoint && previewPoint && (
+            {mode === "path-point" && previewPoint && (
                 <span
-                    className="pointer-events-none absolute z-20 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/60"
+                    className="pointer-events-none absolute z-20 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary/60"
                     style={pointStyle(previewPoint)}
                 />
             )}

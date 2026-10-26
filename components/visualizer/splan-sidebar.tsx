@@ -8,6 +8,8 @@ import type { ActionPoint, WayPoint, Splan } from "../../types/geometry"
 
 type SplanSidebarProps = {
     selectedSplan?: Splan
+    selectedPathPointId: string
+    selectedActionPointId: string
     setPathPoints: (points: WayPoint[]) => void
     setActionPoints: (points: ActionPoint[]) => void
     onSelectPoint: (id: string) => void
@@ -18,6 +20,8 @@ type SplanSidebarProps = {
 
 export function SplanSidebar({
     selectedSplan,
+    selectedPathPointId,
+    selectedActionPointId,
     setPathPoints,
     setActionPoints,
     onSelectPoint,
@@ -39,8 +43,10 @@ export function SplanSidebar({
                             <PointList
                                 id="points-list"
                                 items={selectedSplan?.pathPoints ?? []}
-                                setItems={setPathPoints}
                                 kind="path"
+                                selectedId={selectedPathPointId}
+                                hoveredId={selectedActionPointId}
+                                setItems={setPathPoints}
                                 onSelect={onSelectPoint}
                                 onHover={onHoverPoint}
                             />
@@ -52,8 +58,10 @@ export function SplanSidebar({
                             <PointList
                                 id="actions-list"
                                 items={selectedSplan?.actionPoints ?? []}
-                                setItems={setActionPoints}
                                 kind="action"
+                                selectedId={selectedActionPointId}
+                                hoveredId={selectedActionPointId}
+                                setItems={setActionPoints}
                                 onSelect={onSelectAction}
                                 onHover={onHoverAction}
                             />

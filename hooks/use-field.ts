@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from "react"
 type Pan = { x: number; y: number }
 
 export function useField() {
-    const [zoom, setZoom] = useState(1)
+    const [zoom, setZoom] = useState(0.85)
     const [pan, setPan] = useState<Pan>({ x: 0, y: 0 })
     const [isDragging, setIsDragging] = useState(false)
     const dragStartRef = useRef<Pan>({ x: 0, y: 0 })
@@ -25,7 +25,7 @@ export function useField() {
     const handleWheel = useCallback((event: React.WheelEvent<HTMLDivElement>) => {
         event.preventDefault()
         setZoom((previousZoom) => {
-            const nextZoom = Math.min(Math.max(previousZoom - event.deltaY * 0.001, 0.5), 4)
+            const nextZoom = Math.min(Math.max(previousZoom - event.deltaY * 0.001, 0.5), 3)
             setPan((previousPan) => clampPan(previousPan, nextZoom))
             return nextZoom
         })
